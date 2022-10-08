@@ -36,6 +36,35 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    proxy: {
+      '/dev-api/api': {
+        target: 'http://127.0.0.1:8080', // 后端地址
+        // target: 'localhost:8080/manage', // 原始地址
+        changeOrigin: true, // 开启代理，在本地创建一个虚拟服务端
+        pathRewrite: {
+          '^/dev-api/api': '/api'
+        },
+        onProxyReq: function(proxyReq, req, res, options) {
+          if (req.body && proxyReq.getHeader('Content-Type') === 'application/json') {
+            const bodyData = JSON.stringify(req.body)
+            // incase if content-type is application/x-www-form-urlencoded -> we need to change to application/json
+            proxyReq.setHeader('Content-Type', 'application/json')
+            proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData))
+            // stream the content
+            proxyReq.write(bodyData)
+          }
+        }
+
+      },
+      '/dev-api/sys': {
+        target: 'http://127.0.0.1:8080', // 后端地址
+        // target: 'localhost:8080/manage', // 原始地址
+        changeOrigin: true, // 开启代理，在本地创建一个虚拟服务端
+        pathRewrite: {
+          '^/dev-api/sys': '/sys'
+        }
+      }
+    },
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {

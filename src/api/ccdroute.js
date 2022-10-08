@@ -1,71 +1,15 @@
 import request from '@/utils/request'
 
-export function getRoutes() {
+export function getCcdRoutes() {
   return request({
-    url: '/vue-element-admin/routes',
+    url: '/api/ccdRoute/query',
     method: 'get'
   })
 }
 
-export function getRoles() {
+export function addCcdRoute(data) {
   return request({
-    url: '/api/role/query',
-    method: 'get'
-  })
-}
-
-export function addRole(data) {
-  return request({
-    url: '/api/role/add',
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
-    },
-    data: data,
-    transformRequest: [
-      function(data) {
-        let ret = ''
-        for (const it in data) {
-          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-        }
-        ret = ret.substring(0, ret.lastIndexOf('&'))
-        return ret
-      }
-    ]
-  })
-}
-
-export function updateRole(data) {
-  return request({
-    url: `/api/role/update`,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
-    },
-    data: data,
-    transformRequest: [
-      function(data) {
-        let ret = ''
-        for (const it in data) {
-          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-        }
-        ret = ret.substring(0, ret.lastIndexOf('&'))
-        return ret
-      }
-    ]
-  })
-}
-
-export function deleteRole(id) {
-  return request({
-    url: `/vue-element-admin/role/${id}`,
-    method: 'delete'
-  })
-}
-
-export function addRoleCcd(data) {
-  return request({
-    url: '/api/roleCcd/add',
+    url: '/api/ccdRoute/add',
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
@@ -74,9 +18,9 @@ export function addRoleCcd(data) {
   })
 }
 
-export function delRoleCcd(data) {
+export function getCcdRouteByRoleId(data) {
   return request({
-    url: '/api/roleCcd/del',
+    url: '/api/roleCcd/queryByRoleId',
     method: 'post',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
@@ -92,5 +36,44 @@ export function delRoleCcd(data) {
         return ret
       }
     ]
+  })
+}
+
+export function getAllNotInRoleId(data) {
+  return request({
+    url: '/api/roleCcd/queryAllNotInRoleId',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
+  })
+}
+
+export function updateCcdRoute(data) {
+  return request({
+    url: `/api/ccdRoute/update`,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}
+
+export function deleteCcdRoute(id) {
+  return request({
+    url: `/api/ccdRoute/del?ccdRouteId=${id}`,
+    method: 'get'
   })
 }

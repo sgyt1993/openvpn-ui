@@ -1,24 +1,121 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login(username, password) {
   return request({
-    url: '/vue-element-admin/user/login',
+    url: '/sys/login?userName=' + username + '&password=' + password,
+    method: 'get'
+  })
+}
+
+export function userList() {
+  return request({
+    url: '/api/users/list',
+    method: 'get'
+  })
+}
+
+export function userRevoke(data) {
+  return request({
+    url: '/api/user/revoke',
     method: 'post',
-    data
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
   })
 }
 
-export function getInfo(token) {
+export function userUnRevoke(data) {
   return request({
-    url: '/vue-element-admin/user/info',
-    method: 'get',
-    params: { token }
+    url: '/api/user/unrevoke',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
   })
 }
 
-export function logout() {
+export function createUser(data) {
   return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
+    url: '/api/user/create',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
   })
 }
+
+export function changeUserPassword(data) {
+  return request({
+    url: '/api/user/change-password',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
+  })
+}
+
+export function downloadUser(data) {
+  return request({
+    url: 'api/user/config/show',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
+  })
+}
+

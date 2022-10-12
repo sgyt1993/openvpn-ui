@@ -58,8 +58,8 @@ export function updateRole(data) {
 
 export function deleteRole(id) {
   return request({
-    url: `/vue-element-admin/role/${id}`,
-    method: 'delete'
+    url: `/api/role/del?roleId=${id}`,
+    method: 'get'
   })
 }
 

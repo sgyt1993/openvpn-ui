@@ -14,6 +14,27 @@ export function userList() {
   })
 }
 
+export function userCcdApply(data) {
+  return request({
+    url: `/api/user/userCcdApply`,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
+  })
+}
+
 export function userRevoke(data) {
   return request({
     url: '/api/user/revoke',
@@ -101,6 +122,70 @@ export function changeUserPassword(data) {
 export function downloadUser(data) {
   return request({
     url: 'api/user/config/show',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
+  })
+}
+
+export function addAccountRole(data) {
+  return request({
+    url: `/api/accountRole/add`,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}
+
+export function deleteAccountRole(data) {
+  return request({
+    url: `/api/accountRole/del`,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
+  })
+}
+
+export function addCcdClientAddress(data) {
+  return request({
+    url: `/api/ccdClientAddress/addOrUpdate`,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}
+
+export function queryCcdClientAddressByAccountId(data) {
+  return request({
+    url: `/api/ccdClientAddress/queryByAccountId`,
     method: 'post',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'

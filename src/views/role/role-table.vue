@@ -97,8 +97,8 @@
         </el-table-column>
       </el-table>
       <div style="text-align:right;">
+        <el-button type="success" @click="handleRoleCcdApply()">role ccd apply</el-button>
         <el-button type="danger" @click="myCcdRouteVisible=false">Cancel</el-button>
-        <el-button type="danger" @click="myCcdRouteVisible=false">role ccd apply</el-button>
       </div>
     </el-dialog>
   </div>
@@ -107,7 +107,7 @@
 <script>
 import { deepClone } from '@/utils'
 import { getRoles, addRole, deleteRole, updateRole, addRoleCcd, delRoleCcd } from '@/api/role'
-import { getAllNotInRoleId, getCcdRouteByRoleId } from '@/api/ccdroute'
+import { getAllNotInRoleId, getCcdRouteByRoleId, roleCcdRouteApply } from '@/api/ccdroute'
 
 const defaultRole = {
   id: '',
@@ -185,6 +185,17 @@ export default {
         }, 10 * 1000)
       })
     },
+    handleRoleCcdApply() {
+      const data = {
+        'roleId': this.tempRoleId
+      }
+      roleCcdRouteApply(data).then(res => {
+        this.$message({
+          type: 'success',
+          message: 'ccd apply succed!'
+        })
+      })
+    },
     handleEdit(scope) {
       this.dialogType = 'edit'
       this.dialogVisible = true
@@ -230,15 +241,15 @@ export default {
         }, 10 * 1000)
       })
     },
-    handleDelete({ $index, row }) {
+    handleDelete(scope) {
       this.$confirm('Confirm to remove the role?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
       })
         .then(async() => {
-          await deleteRole(row.key)
-          this.rolesList.splice($index, 1)
+          await deleteRole(scope.row.id)
+          this.getRoles()
           this.$message({
             type: 'success',
             message: 'Delete succed!'
@@ -251,11 +262,14 @@ export default {
       const isEdit = this.dialogType === 'edit'
 
       if (isEdit) {
-        updateRole(this.role)
+        updateRole(this.role).then(res => {
+          this.getRoles()
+        })
       } else {
-        addRole(this.role)
+        addRole(this.role).then(res => {
+          this.getRoles()
+        })
       }
-
       const { id, roleName } = this.role
       this.dialogVisible = false
       this.$notify({

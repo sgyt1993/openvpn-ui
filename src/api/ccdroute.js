@@ -39,6 +39,27 @@ export function getCcdRouteByRoleId(data) {
   })
 }
 
+export function roleCcdRouteApply(data) {
+  return request({
+    url: '/api/roleCcd/queryByRoleId',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+    },
+    data: data,
+    transformRequest: [
+      function(data) {
+        let ret = ''
+        for (const it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'))
+        return ret
+      }
+    ]
+  })
+}
+
 export function getAllNotInRoleId(data) {
   return request({
     url: '/api/roleCcd/queryAllNotInRoleId',
